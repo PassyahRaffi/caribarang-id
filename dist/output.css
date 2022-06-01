@@ -1074,12 +1074,16 @@ input:checked + .toggle-bg {
   height: 2rem;
 }
 
+.h-\[955\.5rem\] {
+  height: 955.5rem;
+}
+
 .h-\[25rem\] {
   height: 25rem;
 }
 
-.h-\[286px\] {
-  height: 286px;
+.h-\[951\.3rem\] {
+  height: 951.3rem;
 }
 
 .h-\[3rem\] {
@@ -1100,94 +1104,6 @@ input:checked + .toggle-bg {
 
 .h-8 {
   height: 2rem;
-}
-
-.h-screen {
-  height: 100vh;
-}
-
-.h-\[200rem\] {
-  height: 200rem;
-}
-
-.h-\[300rem\] {
-  height: 300rem;
-}
-
-.h-\[300\%\] {
-  height: 300%;
-}
-
-.h-\[5000rem\] {
-  height: 5000rem;
-}
-
-.h-\[1000rem\] {
-  height: 1000rem;
-}
-
-.h-\[900rem\] {
-  height: 900rem;
-}
-
-.h-\[980rem\] {
-  height: 980rem;
-}
-
-.h-\[970rem\] {
-  height: 970rem;
-}
-
-.h-\[960rem\] {
-  height: 960rem;
-}
-
-.h-\[955rem\] {
-  height: 955rem;
-}
-
-.h-\[956rem\] {
-  height: 956rem;
-}
-
-.h-\[955\.5rem\] {
-  height: 955.5rem;
-}
-
-.h-\[940rem\] {
-  height: 940rem;
-}
-
-.h-\[950rem\] {
-  height: 950rem;
-}
-
-.h-\[952rem\] {
-  height: 952rem;
-}
-
-.h-\[951rem\] {
-  height: 951rem;
-}
-
-.h-\[951\.5rem\] {
-  height: 951.5rem;
-}
-
-.h-\[951\.2rem\] {
-  height: 951.2rem;
-}
-
-.h-\[951\.3rem\] {
-  height: 951.3rem;
-}
-
-.h-3 {
-  height: 0.75rem;
-}
-
-.h-1 {
-  height: 0.25rem;
 }
 
 .w-max {
@@ -1309,18 +1225,6 @@ input:checked + .toggle-bg {
 
 .w-1\/2 {
   width: 50%;
-}
-
-.w-6 {
-  width: 1.5rem;
-}
-
-.w-1 {
-  width: 0.25rem;
-}
-
-.w-\[1rem\] {
-  width: 1rem;
 }
 
 .max-w-screen-xl {
@@ -1537,11 +1441,6 @@ input:checked + .toggle-bg {
   background-color: rgb(195 221 253 / var(--tw-bg-opacity));
 }
 
-.bg-red-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(251 213 213 / var(--tw-bg-opacity));
-}
-
 .bg-green-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(49 196 141 / var(--tw-bg-opacity));
@@ -1569,6 +1468,11 @@ input:checked + .toggle-bg {
 .bg-gray-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+
+.bg-green-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(14 159 110 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -1701,10 +1605,6 @@ input:checked + .toggle-bg {
 
 .text-\[14\.5px\] {
   font-size: 14.5px;
-}
-
-.text-\[35px\] {
-  font-size: 35px;
 }
 
 .text-\[15px\] {

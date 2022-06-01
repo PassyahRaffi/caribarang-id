@@ -5,15 +5,31 @@ import parse from "html-react-parser";
 
 import ArrNext from "../assets/next-arrow.png";
 import Trolli from "../assets/trolli.png";
+import Warning from "../assets/warning.png";
 
 export default function Content() {
   const [product, setProduct] = useState([]);
   const [images, setImages] = useState([]);
   const [varians, setVarians] = useState([]);
-  const [quantity, setQuantity] = useState(0);
+  // const [quantity, setQuantity] = useState(0);
   const [selected, setSelected] = useState();
   const [dataNote, setDataNote] = useState();
   const [names, setNames] = useState();
+  const [keranjang, setKeranjang] = useState();
+  
+
+  /* EXAMPLE */
+  // let Keranjang = {
+  //   id_19210: {
+  //     qty: 0,
+  //     name: "teh manis",
+  //     stock: 99,
+  //     price: 20000,
+  //     fee: 3*100,
+  //   },
+  //   countHarga: 0,
+  //   totalItems: 0,
+  // };
 
   function getData() {
     const url =
@@ -33,22 +49,92 @@ export default function Content() {
         setSelected(data.message.variants[0]);
         setDataNote(data.message.note[0].note);
         setNames(data.message.seller);
+        setInitItemSale(data.message.variants[0]);
       });
+  }
+
+  function setInitItemSale(props) {
+    // console.log("function setInit of selected >>", props);
+    let temp = {
+      countHarga: 0,
+      totalItems: 0,
+    };
+    if (props) {
+      for (let i = 0; i < props.items.length; i++) {
+        let item = props.items[i];
+        // console.log('item id of item let >>', item)
+        temp[`id_${item.id}`] = {
+          name_en: item.name_en,
+          price: item.price,
+          stock: item.stock,
+          qty: 0,
+        };
+      }
+      // console.log("temp >>", temp);
+      setKeranjang(temp);
+    }
   }
 
   const handleClick = (props) => {
     setSelected(props);
+    setInitItemSale(props);
   };
 
-  const decrement = () => {
-    if (quantity > 0) {
-      setQuantity(quantity - 1);
+  const decrement = (id) => {
+    if (keranjang[`id_${id}`]) {
+      setKeranjang((prevState) => ({
+        ...prevState,
+        [`id_${id}`]: {
+          ...prevState[`id_${id}`],
+          // qty: prevState[`id_${id}`].qty - 1,
+          qty: prevState[`id_${id}`].qty > 1 ? prevState[`id_${id}`].qty - 1 : 0,
+          // fee: prevState[`id_${id}`].fee ? countHarga * fee : 0,31;
+        },
+        // countHarga: prevState.countHarga - prevState[`id_${id}`].price,
+        countHarga: prevState.countHarga > 1 ? prevState.countHarga - prevState[`id_${id}`].price : 0,
+        // totalItems: prevState.totalItems - 1
+        totalItems : prevState.totalItems > 1 ? prevState.totalItems - 1 : 0,
+      }));
     }
   };
 
-  const increment = () => {
-    setQuantity(quantity + 1);
+  const increment = (id) => {
+    if (keranjang[`id_${id}`]) {
+      setKeranjang((prevState) => ({
+        ...prevState,
+        [`id_${id}`]: {
+          ...prevState[`id_${id}`],
+          qty: prevState[`id_${id}`].qty + 1,
+        },
+        countHarga: prevState.countHarga + prevState[`id_${id}`].price,
+        totalItems: prevState.totalItems + 1,
+      }));
+    }
   };
+
+  const getQty = (id) => {
+    // console.log("keranjang di dapat >>", keranjang);
+    // console.log('cari qty >>', keranjang[`id_${id}`])
+    return keranjang[`id_${id}`] ? keranjang[`id_${id}`].qty : 0;
+  };
+
+
+  const alert = (
+    <div
+      className="flex items-center text-white bg-green-500 rounded-lg py-2 text-md justify-center font-bold"
+      role="alert"
+    >
+      <div className="">
+        <img src={Warning} alt="warning!" />
+      </div>
+      <div className="">
+        <div className="">Error</div>
+        <div className="">
+          Minimal pembelian produk ini adalah:{product.moq}
+        </div>
+      </div>
+    </div>
+  );
 
   useEffect(() => {
     getData();
@@ -87,7 +173,8 @@ export default function Content() {
                     className="h-full w-full"
                     src={selected ? selected.cover : product.cover}
                     alt="click_preview"
-                  />
+                    ></img>
+                    {console.log("select>>>>>>>>",selected)}
                 </div>
 
                 {/* IMAGE BELLOW */}
@@ -106,6 +193,7 @@ export default function Content() {
                             <video
                               className="h-[5rem] w-[5rem] py-1 px-1 cursor-pointer border-[1px] border-gray-300"
                               src={props.url}
+                              alt="video"
                             ></video>
                           </button>
                         );
@@ -133,7 +221,7 @@ export default function Content() {
 
               {/* SIDE CENTER */}
               <div className="w-[45%] py-2 px-2">
-                <div className="text-black font-semibold leading-6 text-[16px] w-[100%] h-[3.2rem]">
+                <div className="text-black font-semibold leading-6 text-[15px] w-[100%] h-[3.2rem]">
                   {product.name_en}
                 </div>
                 <div className="grid grid-cols-1 ">
@@ -183,6 +271,8 @@ export default function Content() {
                 </div>
                 {selected &&
                   selected.items.map((props) => {
+                    // console.log('keranjang looping >>', keranjang)
+                    // console.log('how to string >>', keranjang[`id_${String(props.id)}`].qty, String(props.id) )
                     return (
                       <div
                         key={props.id}
@@ -201,17 +291,14 @@ export default function Content() {
                           {props.stock} Stok
                         </div>
                         <div className="flex py-2 w-[11.2rem] items-center">
-                          {/* {items,map((props.index) => {
-                            return (
-                              
-                            )
-                          })} */}
-
+                          {/* decrement */}
                           <div className="flex gap-1 w-full text-black">
                             <button
                               id="button"
                               type="button"
-                              onClick={decrement}
+                              onClick={() => {
+                                decrement(props.id);
+                              }}
                               className="border-[1px] border-gray-300 bg-gray-100 hover:bg-gray-300 text-center h-6 w-8 bg-brand-pink text-brand-red rounded-md active:bg-brand-red active:text-brand-pink"
                             >
                               -
@@ -219,13 +306,16 @@ export default function Content() {
                             <input
                               id="quantity"
                               typeof="number"
-                              placeholder={quantity}
+                              placeholder={getQty(props.id)}
                               className="border-[1px] border-gray-300 flex text-center items-center justify-center h-6 w-[3rem] focus:ring-blue-500 focus:border-indigo-500 py-2 rounded-md"
                             />
+                            {/* increment */}
                             <button
                               id="button"
                               type="button"
-                              onClick={increment}
+                              onClick={() => {
+                                increment(props.id);
+                              }}
                               className="border-[1px] border-gray-300 bg-gray-100 hover:bg-gray-300 text-center h-6 w-8 bg-brand-pink text-brand-red rounded-md active:bg-brand-red active:text-brand-pink"
                             >
                               +
@@ -269,14 +359,12 @@ export default function Content() {
                   {/* BARIS 1 */}
                   <div className="flex py-2 gap-1">
                     <div className="w-[50%] h-max">
-                      Harga Produk X {quantity}
+                      Harga Produk X {keranjang ? keranjang.totalItems : 0}
                     </div>
                     <div className="w-[50%] h-max flex justify-end">
                       Rp{" "}
                       {formatThousands(
-                        Math.round(
-                          quantity ? quantity + product.price : quantity
-                        ),
+                        Math.round(keranjang ? keranjang.countHarga : 0),
                         {
                           separator: ",",
                         }
@@ -290,7 +378,7 @@ export default function Content() {
                       Rp{" "}
                       {formatThousands(
                         Math.round(
-                          quantity ? quantity + product.price * 0.031 : quantity
+                          keranjang ? keranjang.countHarga * 0.03 : 0
                         ),
                         {
                           separator: ",",
