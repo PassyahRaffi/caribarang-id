@@ -1,27 +1,19 @@
-import React, { state, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import formatThousands from "format-thousands";
+import Tooltip from "@mui/material/Tooltip";
+import parse from "html-react-parser";
 
 import ArrNext from "../assets/next-arrow.png";
 import Trolli from "../assets/trolli.png";
 
-import parse from "html-react-parser";
-
-import "flowbite";
-
 export default function Content() {
   const [product, setProduct] = useState([]);
-
   const [images, setImages] = useState([]);
-
-  // const [preview, setPreview] = useState();
-
   const [varians, setVarians] = useState([]);
-
   const [quantity, setQuantity] = useState(0);
-
   const [selected, setSelected] = useState();
-
   const [dataNote, setDataNote] = useState();
+  const [names, setNames] = useState();
 
   function getData() {
     const url =
@@ -39,8 +31,8 @@ export default function Content() {
         setImages(data.message.images);
         setVarians(data.message.variants);
         setSelected(data.message.variants[0]);
-        // setPreview(data.message.images[0])
         setDataNote(data.message.note[0].note);
+        setNames(data.message.seller);
       });
   }
 
@@ -94,7 +86,7 @@ export default function Content() {
                   <img
                     className="h-full w-full"
                     src={selected ? selected.cover : product.cover}
-                    alt="click preview"
+                    alt="click_preview"
                   />
                 </div>
 
@@ -311,18 +303,15 @@ export default function Content() {
                     <div className="w-[50%] h-[1.5rem]">Ongkir Lokal China</div>
                     <div className="w-[50%] h-[1.5rem] flex justify-end items-center">
                       Rp -
-                      <span className="w-[1.8rem] h-full ml-1 cursor-pointer flex justify-center items-center">
-                        {/* <FontAwesomeIcon icon="fa-regular fa-circle-exclamation" /> */}
-                        <button
-                          className="w-full h-full rounded-[3px] hover:bg-cyan-300 border-[1px] border-blue-600 flex justify-center items-center"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Tooltip on bottom"
+                      <span className="w-[1.8rem] h-full ml-1 hover:bg-cyan-300 border-[1px] rounded-[3px] border-blue-600 cursor-pointer flex justify-center items-center">
+                        <Tooltip
+                          className="rounded-[3px]"
+                          title="Biaya pengiriman dari seller ke gudang caribarang.id di China.
+                          Biaya ini akan tersedia di halaman checkout setelah admin kami menghitung berat
+                          atau volume barang yang kamu pesan"
                         >
-                          <div id="menuIcons">
-                            <i className="fas fa-info-circle"></i>
-                          </div>
-                        </button>
+                          <i className="fas fa-info-circle"></i>
+                        </Tooltip>
                       </span>
                     </div>
                   </div>
@@ -333,12 +322,15 @@ export default function Content() {
                     </div>
                     <div className="w-[50%] h-[1.5rem] flex justify-end items-center">
                       Rp -
-                      <span className="w-[1.8rem] h-full ml-1 cursor-pointer flex justify-center items-center">
-                        <div className="w-full h-full rounded-[3px] hover:bg-cyan-300 border-[1px] border-blue-600 flex justify-center items-center">
-                          <div id="menuIcons">
-                            <i className="fas fa-info-circle"></i>
-                          </div>
-                        </div>
+                      <span className="w-[1.8rem] h-full ml-1 hover:bg-cyan-300 border-[1px] rounded-[3px] border-blue-600 cursor-pointer flex justify-center items-center">
+                        <Tooltip
+                          className="rounded-[3px]"
+                          title="Biaya pengiriman dari Chine ke Indonesia akan dihitungkan oleh admin kami
+                            setelah anda membuat orderan, Biaya ini di tagihkan pada saat barang yang kamu pesan
+                            telah sampai di Indonesia"
+                        >
+                          <i className="fas fa-info-circle"></i>
+                        </Tooltip>
                       </span>
                     </div>
                   </div>
@@ -385,8 +377,7 @@ export default function Content() {
               </div>
               <div className="flex mx-3 w-full">
                 <div className="items-end w-full font-semibold text-gray-500 text-[12px]">
-                  {/* {product.seller.name} */}
-                  Lorem ipsum dolor sit amet.
+                  {names ? names.name : "Loading ..."}
                 </div>
               </div>
             </span>
@@ -404,7 +395,7 @@ export default function Content() {
               </div>
               <div className="mx-2 w-full">
                 <div className="items-end font-semibold text-gray-500 text-[12px]">
-                  {parse(dataNote)}
+                  {dataNote ? parse(dataNote) : "Loading ..."}
                 </div>
               </div>
             </span>
