@@ -1,7 +1,13 @@
 module.exports = {
-  content: ["./src/**/*.{html,js,jx}"],
+  content: ["./src/**/*.{html,js,jsx,ts,tsx}", "./node_modules/flowbite/**/*.js"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'biru-tosca': '#00D1CC'
+      }
+    },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
