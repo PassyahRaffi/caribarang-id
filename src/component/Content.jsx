@@ -174,7 +174,7 @@ export default function Content() {
                     src={selected ? selected.cover : product.cover}
                     alt="click_preview"
                     ></img>
-                    {console.log("select>>>>>>>>",selected)}
+                    {/* {console.log("select>>>>>>>>",selected)} */}
                 </div>
 
                 {/* IMAGE BELLOW */}
